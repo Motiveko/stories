@@ -1,0 +1,13 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+  },
+  "stylelint.enable": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "prettier.configPath": ".prettierrc.js",
+  "eslint.options": {
+    "overrideConfigFile": ".eslintrc.js"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
+}
