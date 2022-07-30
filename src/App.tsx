@@ -1,8 +1,12 @@
 import React from 'react';
+import Background from './component/Background';
+import HoverButton from './component/HoverButton/HoverButton';
 
 function App() {
   return (
-    <div>APP</div>
+    <Background>
+      <HoverButton direction="left">LEFT</HoverButton>
+    </Background>
   );
 }
 
