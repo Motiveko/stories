@@ -1,16 +1,16 @@
 import {ComponentMeta, ComponentStory} from '@storybook/react';
 import React from 'react';
 import Background from '../Background';
-import HoverButton from './HoverButton';
+import TextHover from './TextHover';
 
 export default {
-  title: 'HoverButton',
-  component: HoverButton,
+  title: 'TextHover',
+  component: TextHover,
   decorators: [story => <Background>{story()}</Background>],
-} as ComponentMeta<typeof HoverButton>;
+} as ComponentMeta<typeof TextHover>;
 
-const Template: ComponentStory<typeof HoverButton> = args => (
-  <HoverButton {...args} />
+const Template: ComponentStory<typeof TextHover> = args => (
+  <TextHover {...args} />
 );
 
 export const Default = Template.bind({});
