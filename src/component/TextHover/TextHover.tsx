@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled, {css} from 'styled-components';
 
-type Direction = 'right' | 'left' | 'center' | 'top' | 'buttom';
+type Direction = 'right' | 'left' | 'centerX' | 'centerY' | 'top' | 'buttom';
 
 type ButtonProps = {
   direction: Direction;
@@ -33,11 +33,21 @@ const StyledButton = styled.span<ButtonProps>`
           background-position: 0% 0%;
           background-size: 100% 0%;
         `;
-      case 'center':
+      case 'buttom':
+        return css`
+          background-position: 0% 100%;
+          background-size: 100% 0%;
+        `;
+      case 'centerY':
+        return css`
+          background-position: 0% 50%;
+          background-size: 100% 0%;
+        `;
+      case 'centerX':
       default:
         return css`
-          background-position: 0% bottom;
-          background-size: 100% 0%;
+          background-position: 50% 0%;
+          background-size: 0% 100%;
         `;
     }
   }}
@@ -50,8 +60,7 @@ const StyledButton = styled.span<ButtonProps>`
 type HoverButtonProps = {
   direction: Direction;
 };
-const HoverButton: React.FC<HoverButtonProps> = ({direction, children}) => {
+const TextHover: React.FC<HoverButtonProps> = ({direction, children}) => {
   return <StyledButton direction={direction}>{children}</StyledButton>;
 };
-
-export default HoverButton;
+export default TextHover;
