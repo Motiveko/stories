@@ -1,12 +1,13 @@
 import React from 'react';
-import Background from './component/Background';
-import HoverButton from './component/TextHover/TextHover';
+import GlobalStyle from './component/Background';
+import RippleButton from './component/RippleButton/RippleButton';
 
 function App() {
   return (
-    <Background>
-      <HoverButton direction="left">LEFT</HoverButton>
-    </Background>
+    <>
+      <GlobalStyle />
+      <RippleButton>CLICK</RippleButton>
+    </>
   );
 }
 
