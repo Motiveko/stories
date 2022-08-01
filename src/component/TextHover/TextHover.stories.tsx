@@ -1,6 +1,6 @@
 import React from 'react';
 import {ComponentMeta, ComponentStory} from '@storybook/react';
-import GlobalStyle from '../Background';
+import GlobalStyle from '../GlobalStyle';
 import TextHover from './TextHover';
 
 export default {

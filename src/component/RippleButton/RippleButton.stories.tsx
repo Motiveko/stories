@@ -1,5 +1,5 @@
 import {ComponentMeta, ComponentStory} from '@storybook/react';
-import GlobalStyle from '../Background';
+import GlobalStyle from '../GlobalStyle';
 import RippleButton from './RippleButton';
 
 export default {

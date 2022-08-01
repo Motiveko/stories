@@ -1,12 +1,12 @@
 import React from 'react';
-import GlobalStyle from './component/Background';
-import RippleButton from './component/RippleButton/RippleButton';
+import GlobalStyle from './component/GlobalStyle';
+import Card3d from './component/Card3d/Card3d';
 
 function App() {
   return (
     <>
-      <GlobalStyle />
-      <RippleButton>CLICK</RippleButton>
+      <GlobalStyle background-color="white" />
+      <Card3d />
     </>
   );
 }
