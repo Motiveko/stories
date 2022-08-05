@@ -45,13 +45,23 @@ const CustomCursorBackgrounds: React.FC = () => {
       <div className="carousel" data-cursor="carousel">
         Carousel
       </div>
-      <a href="" className="email" data-cursor="link" data-name="Send Email">
+      <a
+        href="javascript:void(0)"
+        className="email"
+        data-cursor="link"
+        data-name="Send Email"
+      >
         a92667441@gmail.com
       </a>
       <br />
       <br />
       <br />
-      <a href="#" className="address" data-cursor="link" data-name="Show Map">
+      <a
+        href="javascript:void(0)"
+        className="address"
+        data-cursor="link"
+        data-name="Show Map"
+      >
         강남구 테헤란로
       </a>
       <img src={image1} alt="img" className="img-1" data-cursor="img" />
