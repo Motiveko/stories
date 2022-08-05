@@ -1,12 +1,12 @@
 import React from 'react';
-import GlobalStyle from './component/GlobalStyle';
-import GlitchText from './component/Glitch/GlitchText';
+import CustomCursorBackgrounds from './component/CustomCursor/CustomCursorBackgrounds';
+import CustomCursor from './component/CustomCursor/CustomCursor';
 
 function App() {
   return (
     <>
-      <GlobalStyle />
-      <GlitchText label="Motiveko" />
+      <CustomCursorBackgrounds />
+      <CustomCursor />
     </>
   );
 }
