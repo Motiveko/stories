@@ -1,12 +1,13 @@
 import React from 'react';
-import CustomCursorBackgrounds from './component/CustomCursor/CustomCursorBackgrounds';
-import CustomCursor from './component/CustomCursor/CustomCursor';
+import MagnetButton, {
+  MagnetButtonBackground,
+} from './component/MagnetButton/MagnetButton';
 
 function App() {
   return (
     <>
-      <CustomCursorBackgrounds />
-      <CustomCursor />
+      <MagnetButtonBackground />
+      <MagnetButton />
     </>
   );
 }
