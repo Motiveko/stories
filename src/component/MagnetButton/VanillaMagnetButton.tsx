@@ -9,9 +9,10 @@ const StyledButton = styled.a`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  transform: translate(var(--transX), var(--transY));
+  transform: translate3d(var(--transX), var(--transY), 0);
   cursor: pointer;
-  /* transition: all 45ms ease-in-out; */
+
+  transition: all var(--timing) ease-in-out;
 `;
 const StyledText = styled.span`
   font-size: 30px;
@@ -19,17 +20,27 @@ const StyledText = styled.span`
   pointer-events: none;
   transition: all 100ms ease-out;
 `;
-const MagnetButton: React.FC = () => {
+
+const VanillaMagnetButton: React.FC = () => {
   const buttonRef = useRef<HTMLAnchorElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
 
+  const timing = 45;
+  const damper = -0.75;
+  const damperingId = useRef<number>();
+
   const onMouseMove: React.MouseEventHandler<HTMLAnchorElement> = useCallback(
     e => {
+      if (damperingId.current) {
+        clearInterval(damperingId.current);
+        damperingId.current = undefined;
+      }
       const button = buttonRef.current;
       const text = textRef.current;
       if (!button || !text) {
         return;
       }
+      button.style.setProperty('--timing', `${timing}ms`);
 
       const {clientHeight, clientWidth, offsetLeft, offsetTop} = button;
       const {pageX, pageY} = e.nativeEvent;
@@ -49,19 +60,35 @@ const MagnetButton: React.FC = () => {
     },
     [],
   );
-  const onMouseLeave: React.MouseEventHandler<HTMLAnchorElement> = useCallback(
-    e => {
+  const onMouseLeave: React.MouseEventHandler<HTMLAnchorElement> =
+    useCallback(() => {
       const button = buttonRef.current;
       const text = textRef.current;
       if (!button || !text) {
         return;
       }
-      button.style.setProperty('--transX', `0`);
-      button.style.setProperty('--transY', `0`);
-      text.style.transform = 'translate3d(0, 0, 0) rotate3d(0, 0, 0, 0deg)';
-    },
-    [],
-  );
+      let transX = Number(
+        button.style.getPropertyValue('--transX').replace('px', ''),
+      );
+      let transY = Number(
+        button.style.getPropertyValue('--transY').replace('px', ''),
+      );
+
+      damperingId.current = window.setInterval(() => {
+        transX *= damper;
+        transY *= damper;
+
+        if (Math.abs(transX) < 1 && Math.abs(transY) < 1) {
+          button.style.setProperty('--transX', `0`);
+          button.style.setProperty('--transY', `0`);
+          clearInterval(damperingId.current);
+          damperingId.current = undefined;
+        }
+        button.style.setProperty('--transX', `${transX}px`);
+        button.style.setProperty('--transY', `${transY}px`);
+      }, timing + 5);
+      text.style.transform = '';
+    }, [damper]);
 
   return (
     <StyledButton
@@ -69,12 +96,12 @@ const MagnetButton: React.FC = () => {
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
     >
-      <StyledText ref={textRef}>GET IN TOUCH</StyledText>
+      <StyledText ref={textRef}>HOVER</StyledText>
     </StyledButton>
   );
 };
 
-export default MagnetButton;
+export default VanillaMagnetButton;
 
 export const MagnetButtonBackground = createGlobalStyle`
 html, body {

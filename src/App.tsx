@@ -1,13 +1,13 @@
 import React from 'react';
-import MagnetButton, {
+import VanillaMagnetButton, {
   MagnetButtonBackground,
-} from './component/MagnetButton/MagnetButton';
+} from './component/MagnetButton/VanillaMagnetButton';
 
 function App() {
   return (
     <>
       <MagnetButtonBackground />
-      <MagnetButton />
+      <VanillaMagnetButton />
     </>
   );
 }
