@@ -1,10 +1,11 @@
 import {ComponentMeta, ComponentStory} from '@storybook/react';
 import styled from 'styled-components';
 import GsapMagnetButton, {MagnetButtonBackground} from './\bGsapMagnetButton';
+import VanillaMagnetButton from './VanillaMagnetButton';
 
-const CenterDiv = styled.div`
+const Layout = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   height: 500px;
 `;
@@ -13,19 +14,23 @@ export default {
   component: GsapMagnetButton,
   decorators: [
     story => (
-      <CenterDiv>
+      <Layout>
         <MagnetButtonBackground />
         {story()}
-      </CenterDiv>
+      </Layout>
     ),
   ],
 } as ComponentMeta<typeof GsapMagnetButton>;
 
 const Template: ComponentStory<typeof GsapMagnetButton> = args => (
-  <GsapMagnetButton {...args} />
+  <>
+    <GsapMagnetButton {...args} />
+    <div style={{margin: '1rem'}} />
+    <VanillaMagnetButton label={'Vanilla'} />
+  </>
 );
 
 export const Default = Template.bind({});
 Default.args = {
-  label: 'HOVER',
+  label: 'GSAP',
 };
