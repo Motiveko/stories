@@ -1,13 +1,13 @@
 import React from 'react';
-import VanillaMagnetButton, {
+import GsapMagnetButton, {
   MagnetButtonBackground,
-} from './component/MagnetButton/VanillaMagnetButton';
+} from './component/MagnetButton/\bGsapMagnetButton';
 
 function App() {
   return (
     <>
       <MagnetButtonBackground />
-      <VanillaMagnetButton />
+      <GsapMagnetButton label="HOVER" />
     </>
   );
 }
