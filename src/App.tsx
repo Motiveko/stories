@@ -1,13 +1,11 @@
 import React from 'react';
-import GsapMagnetButton, {
-  MagnetButtonBackground,
-} from './component/MagnetButton/\bGsapMagnetButton';
+import ImageGrid, {GlobalStyle} from './component/ImageGrid/ImageGrid';
 
 function App() {
   return (
     <>
-      <MagnetButtonBackground />
-      <GsapMagnetButton label="HOVER" />
+      <GlobalStyle />
+      <ImageGrid />
     </>
   );
 }
