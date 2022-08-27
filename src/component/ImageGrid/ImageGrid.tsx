@@ -1,21 +1,113 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import styled, {createGlobalStyle} from 'styled-components';
 
 // const styledCard = styled
 
-export const GlobalStyle = createGlobalStyle`
-  html, body {
+type AnimationType =
+  | 'forward'
+  | 'backward'
+  | 'toBottom'
+  | 'toRight'
+  | 'crossDown'
+  | 'crossUp'
+  | 'spreadOut';
+type ImageGridProps = {
+  row?: number;
+  column?: number;
+  animationType?: AnimationType;
+  tick?: number;
+};
+const ImageGrid: React.FC<ImageGridProps> = ({
+  row = 15,
+  column = 10,
+  animationType = 'forward',
+  tick = 10,
+}) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [fragments, setFragments] = useState<React.ReactElement[]>([]);
+
+  const animate = useCallback(() => {
+    if (!cardRef.current) {
+      return;
+    }
+    const card = cardRef.current;
+    card.className += ' hide';
+    const _fragments = [];
+    // row, col
+    card.style.setProperty('--col', String(column));
+    card.style.setProperty('--row', String(row));
+
+    for (let j = 0; j < row; j++) {
+      for (let i = 0; i < column; i++) {
+        /**
+         * TODO  style.setProperty를 호출할 수가 없는데... Element vs ReactElement vs HTMLElement
+         * https://betterprogramming.pub/typescript-reactjs-the-element-vs-reactelement-vs-htmlelement-vs-node-confusion-6cda21315ddd
+         */
+        const isOdd = (i + j) % 2 === 0;
+        const delay = getDelay({
+          i,
+          j,
+          column,
+          row,
+          animationType,
+          offset: 0,
+          tick,
+        });
+        const fragment = (
+          <Fragment
+            key={`${Math.random()}`}
+            x={i}
+            y={j}
+            isOdd={isOdd}
+            delay={delay}
+            duration={500}
+          />
+        );
+        _fragments.push(fragment);
+      }
+    }
+    setFragments(_fragments);
+  }, [animationType, column, row, tick]);
+
+  useEffect(() => {
+    if (!cardRef.current) {
+      return;
+    }
+    // animate();
+  }, [animate, column, row]);
+
+  const onClick = () => {
+    setFragments([]);
+    setTimeout(() => animate());
+  };
+
+  const title = useMemo(() => {
+    return animationType.replace(/([a-z])([A-Z])/g, '$1 $2').toUpperCase();
+  }, [animationType]);
+
+  return (
+    <Card onClick={onClick} ref={cardRef} data-title={title}>
+      {fragments}
+    </Card>
+  );
+};
+export const ImageGridGlobalStyle = createGlobalStyle`
+  html body {
     background-color: #121212;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100vh;
     font-size: 16px;
     font-weight: bold;
     color: #aaa;
     font-family: 'Quicksand', serif;
+  }
+  #root {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
   }
 
   @media (max-width: 800px) {
@@ -46,6 +138,7 @@ const Card = styled.div`
   /* border: 1px solid #f1f1f1; */
   cursor: pointer;
   position: relative;
+  margin-top: 5rem;
 
   &::after {
     content: 'CLICK ME';
@@ -144,71 +237,44 @@ const Fragment: React.FC<FragmentProps> = ({x, y, isOdd, delay, duration}) => {
   }, [delay, duration, isOdd, x, y]);
   return <StyledFragment ref={ref} />;
 };
-type ImageGridProps = {
-  row?: number;
-  column?: number;
-  title?: string;
+type GetDelayProps = {
+  i: number;
+  j: number;
+  column: number;
+  row: number;
+  animationType: AnimationType;
+  offset: number;
+  tick?: number;
 };
-const ImageGrid: React.FC<ImageGridProps> = ({
-  row = 15,
-  column = 10,
-  title = 'Default',
+const getDelay: (props: GetDelayProps) => number = ({
+  i,
+  j,
+  column,
+  row,
+  animationType,
+  offset,
+  tick = 15,
 }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [fragments, setFragments] = useState<React.ReactElement[]>([]);
-
-  const animate = useCallback(() => {
-    if (!cardRef.current) {
-      return;
-    }
-    const card = cardRef.current;
-    card.className += ' hide';
-    const _fragments = [];
-    // row, col
-    card.style.setProperty('--col', String(column));
-    card.style.setProperty('--row', String(row));
-    let delay = 0;
-    for (let i = 0; i < row; i++) {
-      for (let j = 0; j < column; j++) {
-        /**
-         * TODO  style.setProperty를 호출할 수가 없는데... Element vs ReactElement vs HTMLElement
-         * https://betterprogramming.pub/typescript-reactjs-the-element-vs-reactelement-vs-htmlelement-vs-node-confusion-6cda21315ddd
-         */
-        const isOdd = (i + j) % 2 === 0;
-
-        const fragment = (
-          <Fragment
-            key={`${Math.random()}`}
-            x={j}
-            y={i}
-            isOdd={isOdd}
-            delay={delay}
-            duration={500}
-          />
-        );
-        delay += 10;
-        _fragments.push(fragment);
-      }
-    }
-    setFragments(_fragments);
-  }, [column, row]);
-
-  useEffect(() => {
-    if (!cardRef.current) {
-      return;
-    }
-    // animate();
-  }, [animate, column, row]);
-
-  const onClick = () => {
-    setFragments([]);
-    setTimeout(() => animate());
-  };
-  return (
-    <Card onClick={onClick} ref={cardRef} data-title={title}>
-      {fragments}
-    </Card>
-  );
+  switch (animationType) {
+    case 'forward':
+      return offset + (i + j * column) * tick;
+    case 'backward':
+      return offset + (column - i + (row - j) * column) * tick;
+    case 'toBottom':
+      return offset + (j * tick * column) / 1.2;
+    case 'toRight':
+      return offset + (i * tick * row) / 1.2;
+    case 'crossDown':
+      return offset + ((i + j) * tick) / 1.2;
+    case 'crossUp':
+      return offset + ((column + row - i - j - 2) * tick) / 1.2;
+    case 'spreadOut':
+      const [centerX, centerY] = [Math.floor(column / 2), Math.floor(row / 2)];
+      return (
+        offset + ((Math.abs(centerX - i) + Math.abs(centerY - j)) * tick) / 1.2
+      );
+  }
+  return 0;
 };
 
 export default ImageGrid;

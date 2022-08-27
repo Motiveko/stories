@@ -1,11 +1,14 @@
 import React from 'react';
-import ImageGrid, {GlobalStyle} from './component/ImageGrid/ImageGrid';
+import ImageGrid, {ImageGridGlobalStyle} from './component/ImageGrid/ImageGrid';
 
 function App() {
   return (
     <>
-      <GlobalStyle />
+      <ImageGridGlobalStyle />
       <ImageGrid />
+      <ImageGrid animationType="backward" />
+      <ImageGrid animationType="toBottom" />
+      <ImageGrid animationType="toRight" />
     </>
   );
 }
