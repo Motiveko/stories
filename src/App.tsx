@@ -1,12 +1,10 @@
 import React from 'react';
-import GlobalStyle from './component/GlobalStyle';
-import GlitchText from './component/Glitch/GlitchText';
+import StackedCard from './component/StackedCard/StackedCard';
 
 function App() {
   return (
     <>
-      <GlobalStyle />
-      <GlitchText label="Motiveko" />
+      <StackedCard />
     </>
   );
 }
